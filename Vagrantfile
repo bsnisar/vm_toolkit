@@ -24,7 +24,7 @@ Vagrant.configure(2) do |config|
     config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
     config.vm.provision "install_common", type: "shell", privileged: true, inline: <<-SCRIPT
-    sudo apt-get install -y git java
+    sudo apt-get install -y git
     SCRIPT
 
     config.vm.provision "install_node", type: "shell", privileged: true, inline: <<-SCRIPT
