@@ -1,0 +1,29 @@
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" This is the Vundle package, which can be found on GitHub.
+" see NEEDtree 
+" http://vimawesome.com/plugin/nerdtree-red
+Plugin 'scrooloose/nerdtree'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'easymotion/vim-easymotion'
+
+" JS 
+Plugin 'pangloss/vim-javascript'
+Plugin 'herringtondarkholme/yats.vim'
+
+" https://github.com/Blevs/vim-dzo
+Plugin 'Blevs/vim-dzo'
+
+
+" We could also add repositories with a ".git" extension
+Plugin 'scrooloose/nerdtree.git'
+
+" To get plugins from Vim Scripts, you can reference the plugin
+" by name as it appears on the site
+Plugin 'Buffergator'
+
+" Now we can turn our filetype functionality back on
+filetype plugin indent on
