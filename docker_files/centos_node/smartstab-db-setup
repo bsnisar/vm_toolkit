@@ -1,0 +1,18 @@
+#!/bin/bash
+
+script_result=0
+
+start_db () {
+	echo "Starting database server..."
+	PGSTART="${PGENGIN}/bin/pg_ctl -D ${PGDATA} -w -t 300 -l ${PGDATA}/logfile -o '-p 5432' start"
+	su postgres -c "${PGSTART}"
+	
+	echo "Create smartstab db..."
+	sleep 1
+	PGCREATE="psql -f ${PGDATA}/setup_smartstab_db.sql"
+	su postgres -c "${PGCREATE}"
+}
+
+start_db
+
+exit $script_result

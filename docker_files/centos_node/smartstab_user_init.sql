@@ -1,0 +1,3 @@
+CREATE USER smartstab;
+CREATE DATABASE smartstab;
+GRANT ALL PRIVILEGES ON DATABASE smartstab TO smartstab;
