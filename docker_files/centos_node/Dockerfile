@@ -1,4 +1,4 @@
-FROM centos:6
+FROM centos:7
 
 MAINTAINER epam.com
 
@@ -25,23 +25,27 @@ RUN yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel
 	yum install -y postgresql96 postgresql96-server
 
 ENV PGDATA=/var/lib/pgsql/data
+ENV CFGDIR=/usr/etc
 
 RUN mkdir -p ${PGDATA} && chown postgres ${PGDATA}
+
+ADD ./smartstab_user_init.sql ${CFGDIR}
+ADD ./setup_db ${CFGDIR}
+
+RUN chmod +x "${CFGDIR}/setup_db" 
+RUN ${CFGDIR}/setup_db initdb &&\
+	${CFGDIR}/setup_db startdb &&\
+	${CFGDIR}/setup_db create
+
 RUN echo "host all  all    0.0.0.0/0  md5" >> ${PGDATA}/pg_hba.conf
 RUN echo "listen_addresses='*'" >> ${PGDATA}/postgresql.conf
 
-ADD ./smartstab_user_init.sql ${PGDATA}
-
-# setup
-RUN service postgresql-9.6 initdb &&\ 
-	service postgresql-9.6 start &&\
-	su postgres -c "psql -f ${PGDATA}/smartstab_user_init.sql"
 
 # ============
 # Smartstab
 # ============
-ADD ./smart-stub.jar ${APPDIR}
-ADD ./init ${APPDIR}
+# ADD ./smart-stub.jar ${APPDIR}
+# ADD ./init ${APPDIR}
 
 EXPOSE 5432
 
