@@ -1,3 +1,3 @@
-CREATE USER smartstab;
+CREATE USER smartstab WITH SUPERUSER PASSWORD 'smartstab';
 CREATE DATABASE smartstab;
 GRANT ALL PRIVILEGES ON DATABASE smartstab TO smartstab;

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+PG_PS=pgsql
+PG_SRV=postgresql-9.6
+APP_PS=smart-stab
+
+if [[ $(ps auxw | grep ${PG_PS} | grep -v grep | wc -l) != 1 ]];
+then
+    service postgresql-9.6 start
+    echo "Starting system ${PG_SRV} daemon"
+fi
+
+sleep 1;
+
+if [[ $(ps auxw | grep ${APP_PS} | grep -v grep | wc -l) != 1 ]];
+then
+    echo "Starting smart-stab...."
+fi
