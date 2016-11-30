@@ -35,11 +35,9 @@ ADD ./setup_db ${CFGDIR}
 RUN chmod +x "${CFGDIR}/setup_db" 
 RUN ${CFGDIR}/setup_db initdb &&\
 	${CFGDIR}/setup_db startdb &&\
-	${CFGDIR}/setup_db create
+	${CFGDIR}/setup_db createuser
 
-RUN echo "host all  all    0.0.0.0/0  md5" >> ${PGDATA}/pg_hba.conf
-RUN echo "listen_addresses='*'" >> ${PGDATA}/postgresql.conf
-
+ADD ./pg_hba.conf ${PGDATA}
 
 # ============
 # Smartstab

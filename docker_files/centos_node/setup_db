@@ -1,6 +1,5 @@
 #!/bin/bash
 #
-
 # PGVERSION is the full package version, e.g., 9.4.0
 # Note: the specfile inserts the correct value during package build
 PGVERSION=9.4.8
@@ -65,6 +64,10 @@ perform_start_db(){
     $SU -l postgres -c "$startdbcmd" >> "$PGLOG" 2>&1 < /dev/null
 }
 
+perform_stop_db(){
+    $SU -l postgres -c "$PGENGINE/pg_ctl stop" >> "$PGLOG" 2>&1 < /dev/null
+}
+
 perform_create_user(){
     # Create directory for postmaster log files
     if [ ! -e "$PGINIT_SQL" ]; then
@@ -107,7 +110,19 @@ startdb(){
         echo
 }
 
-create(){
+stopdb(){
+        echo -n $"Stoping server ... "
+        if perform_stop_db; then
+            echo 
+            echo $"OK"
+        else
+            echo $"failed, see $PGLOG"
+            script_result=1
+        fi
+        echo
+}
+
+createuser(){
         echo -n $"Creating smartstub database ... "
         if perform_create_user; then
 			echo
@@ -127,8 +142,11 @@ case "$1" in
 	startdb)
 		startdb
 		;;
-	create)
-		create
+    stopdb)
+        startdb
+        ;;
+	createuser)
+		createuser
 		;;
     *)
         echo >&2 "$USAGE_STRING"
