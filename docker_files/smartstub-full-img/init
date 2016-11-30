@@ -6,7 +6,6 @@ PG_SRV=postgresql-9.6
 APP_PS=smart-stab
 ENV_TOOLS=${CFGDIR}/envtools
 
-APP_OPS="-Dlogging.file=myapplication.log -Dlogging.path=/var/log"
 
 if [[ $(ps auxw | grep ${PG_PS} | grep -v grep | wc -l) != 1 ]];
 then
@@ -19,5 +18,5 @@ sleep 1;
 if [[ $(ps auxw | grep ${APP_PS} | grep -v grep | wc -l) != 1 ]];
 then
     echo "Starting smart-stab...."
-    java -jar ${APPDIR}/smart-stub.jar ${APP_OPS} > /dev/null
+    su java -jar ${APPDIR}/smart-stub.jar > /dev/null
 fi

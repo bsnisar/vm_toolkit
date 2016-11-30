@@ -18,28 +18,6 @@ RUN wget --no-cookies --no-check-certificate -q \
 	rm -f jdk-8u102-linux-x64.rpm
 
 # ============
-# PostgreSQL
-# ============
-
-RUN yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-redhat96-9.6-3.noarch.rpm && \ 
-	yum install -y postgresql96 postgresql96-server
-
-ENV PGDATA=/var/lib/pgsql/data
-ENV CFGDIR=/usr/etc
-
-RUN mkdir -p ${PGDATA} && chown postgres ${PGDATA}
-
-ADD ./smartstab_user_init.sql ${CFGDIR}
-ADD ./envtools ${CFGDIR}
-
-RUN chmod +x "${CFGDIR}/envtools" 
-RUN ${CFGDIR}/envtools initdb &&\
-	${CFGDIR}/envtools startdb &&\
-	${CFGDIR}/envtools createuser
-
-ADD ./pg_hba.conf ${PGDATA}
-
-# ============
 # Smartstab
 # ============
 ADD ./smart-stub.jar ${APPDIR}

@@ -44,8 +44,9 @@ ADD ./pg_hba.conf ${PGDATA}
 # ============
 ADD ./smart-stub.jar ${APPDIR}
 ADD ./init ${APPDIR}
-RUN mkdir ${APPDIR}/logs
+ADD ./app.properties ${APPDIR}
 
 EXPOSE 5432
 
-ENTRYPOINT  ["/bin/bash", "/usr/smartstab/init"]
+# ENTRYPOINT  ["/bin/bash", "/usr/smartstab/init"]
+CMD  ["/bin/bash"]
