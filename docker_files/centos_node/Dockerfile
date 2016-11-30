@@ -42,8 +42,8 @@ ADD ./pg_hba.conf ${PGDATA}
 # ============
 # Smartstab
 # ============
-# ADD ./smart-stub.jar ${APPDIR}
-# ADD ./init ${APPDIR}
+ADD ./smart-stub.jar ${APPDIR}
+ADD ./init ${APPDIR}
 
 EXPOSE 5432
 
