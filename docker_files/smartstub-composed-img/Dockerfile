@@ -21,9 +21,8 @@ RUN wget --no-cookies --no-check-certificate -q \
 # Smartstab
 # ============
 ADD ./smart-stub.jar ${APPDIR}
-ADD ./init ${APPDIR}
-RUN mkdir ${APPDIR}/logs
+ADD ./smartstub-init ${APPDIR}
 
-EXPOSE 5432
+EXPOSE 8080
 
-ENTRYPOINT  ["/bin/bash", "/usr/smartstab/init"]
+ENTRYPOINT  ["/bin/bash", "/usr/smartstab/smartstub-init"]

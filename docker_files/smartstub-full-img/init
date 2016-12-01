@@ -18,5 +18,5 @@ sleep 1;
 if [[ $(ps auxw | grep ${APP_PS} | grep -v grep | wc -l) != 1 ]];
 then
     echo "Starting smart-stab...."
-    su java -jar ${APPDIR}/smart-stub.jar > /dev/null
+    su -c "java -jar ${APPDIR}/smart-stub.jar" > /dev/null
 fi
