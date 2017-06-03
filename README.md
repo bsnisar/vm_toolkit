@@ -1,4 +1,4 @@
-# vm toolkit
+# VM toolkit
 
 ### Main idea
 Create toolkit for working with remote machines or dev environments
@@ -6,6 +6,7 @@ Create toolkit for working with remote machines or dev environments
 
 ### Vagrant script VM with useful tools 
 Vagrant (https://www.vagrantup.com/, version >=  1.8.0) with 'Debian x64' box. Include provision scripts for commont tools [git] and nodejs >= 6.x.x
+Adding guest additions can be done: `vagrant plugin install vagrant-vbguest`
 
 ### VM
 Setup Debian VM and use ansible for provisioning. Ansible playbock include several roles:
