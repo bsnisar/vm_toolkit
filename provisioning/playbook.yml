@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+    - name: install git
+      package: name=git state=latest
+      become: true
+  roles:
+    - nginx
