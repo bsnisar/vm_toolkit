@@ -1,0 +1,68 @@
+---
+
+  - name: add key for nginx repo
+    apt_key:
+       id: ABF5BD827BD9BF62
+       keyserver: keyserver.ubuntu.com
+    become: True    
+
+  - name: add nginx official repo deb
+    apt_repository:
+       repo: deb-src http://nginx.org/packages/debian/ jessie nginx
+       state: present
+       filename: 'sources'
+       update_cache: yes
+    when: ansible_os_family == "Debian"
+    become: true
+  
+  - name: add nginx official src repo deb
+    apt_repository:
+       repo: deb-src http://nginx.org/packages/debian/ jessie nginx
+       state: present
+       filename: 'sources'
+       update_cache: yes
+    when: ansible_os_family == "Debian"
+    become: true
+
+
+  - name: add nginx official repo rpm
+    yum_repository:
+      name: nginx
+      description: nginx YUM repo
+      file: nginx
+      baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+      enabled: yes
+      gpgcheck: no
+    when: ansible_os_family == "Centos"
+    become: true
+
+  - name: install nginx
+    apt: name=nginx state=latest force=yes
+    become: true
+
+  - name: download ngx_devel_kit
+    get_url: 
+      url: https://github.com/simpl/ngx_devel_kit/archive/v0.3.0.tar.gz 
+      dest: /tmp/ngx_devel_kit_v0.3.0.tar.gz
+
+  - name: extract ngx_devel_kit
+    unarchive: 
+       src: /tmp/ngx_devel_kit_v0.3.0.tar.gz 
+       dest: /etc/nginx/modules
+       remote_src: True
+    become: True
+
+  - name: get ngx_lua_module
+    get_url: 
+       url: https://github.com/openresty/lua-nginx-module/archive/v0.10.9rc5.tar.gz
+       dest: /tmp/lua_nginx_module_v0.10.9rc5.tar.gz
+
+  - name: extract ngx_lua_module
+    unarchive: 
+       src: /tmp/lua_nginx_module_v0.10.9rc5.tar.gz
+       dest: /etc/nginx/modules
+       remote_src: True
+    become: True
+     
+
+

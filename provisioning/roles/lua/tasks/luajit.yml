@@ -1,0 +1,21 @@
+---    
+
+
+- name: Download LuaJit
+  get_url:
+    url: http://luajit.org/download/LuaJIT-2.0.5.tar.gz
+    dest: /tmp/LuaJIT-2.0.5.tar.gz
+  when: 
+
+- name: extract LuaJit
+  unarchive: 
+    src: /tmp/LuaJIT-2.0.5.tar.gz 
+    dest: /tmp
+    remote_src: True
+
+- name: make LuaJit
+  shell: make && make install
+  args:
+    chdir: /tmp/LuaJIT-2.0.5
+  become: yes
+

@@ -1,0 +1,25 @@
+---
+  - name: install common modules for ngix build
+    package: name=gcc state=latest
+    become: true
+
+  - name: install libpcre3 for nginx
+    package: name=libpcre3 state=latest
+    become: true
+
+  - name: install libpcre3-dev for nginx
+    package: name=libpcre3-dev state=latest
+    become: true
+
+  - name: install make
+    package: name=make state=latest
+    become: true
+
+  - name: check luajit
+    command: luajit -v
+    register: result
+    ignore_errors: True
+
+  - name: install LuaJit
+    include: luajit.yml
+    when: result|failed
