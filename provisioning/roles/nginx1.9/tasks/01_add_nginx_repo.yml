@@ -1,0 +1,41 @@
+  - name: add key for nginx repo
+    apt_key:
+       id: ABF5BD827BD9BF62
+       keyserver: keyserver.ubuntu.com
+    become: True    
+    when: ansible_os_family == "Debian"
+
+  - name: add nginx official repo deb
+    apt_repository:
+       repo: deb-src http://nginx.org/packages/debian/ jessie nginx
+       state: present
+       filename: 'sources'
+       update_cache: yes
+    when: ansible_os_family == "Debian"
+    become: true
+  
+  - name: add nginx official src repo deb
+    apt_repository:
+       repo: deb-src http://nginx.org/packages/debian/ jessie nginx
+       state: present
+       filename: 'sources'
+       update_cache: yes
+    when: ansible_os_family == "Debian"
+    become: true
+
+
+  - name: add nginx official repo rpm
+    yum_repository:
+      name: nginx
+      description: nginx YUM repo
+      file: nginx
+      baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+      enabled: yes
+      gpgcheck: no
+    when: ansible_os_family == "Centos"
+    become: true
+
+  - name: install nginx
+    apt: name=nginx state=latest force=yes
+    become: true
+    when: ansible_os_family == "Debian"

@@ -1,0 +1,5 @@
+---
+nginx_conf_dir: "{% if ansible_os_family == 'FreeBSD' %}/usr/local/etc/nginx{% else %}/etc/nginx{% endif %}"
+nginx_modules_dir: "{{nginx_conf_dir}}/modules"
+nginx_version: 1.2.0
+
