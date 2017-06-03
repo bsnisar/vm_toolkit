@@ -9,7 +9,7 @@ Vagrant (https://www.vagrantup.com/, version >=  1.8.0) with 'Debian x64' box. I
 
 For apropare usage of the VM guest additions should be installed: `vagrant plugin install vagrant-vbguest`
 
-### VM
+### Ansible
 Setup Debian VM and use ansible for provisioning. Ansible playbock include several roles:
 - lua script language
 - nginx 1.9 with additional modules
