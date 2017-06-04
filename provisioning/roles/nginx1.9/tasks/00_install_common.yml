@@ -1,0 +1,16 @@
+---
+  - name: install gcc
+    package: name=gcc state=latest
+    become: true
+
+  - name: install libpcre3
+    package: name=libpcre3 state=latest
+    become: true
+
+  - name: install libpcre3-dev
+    package: name=libpcre3-dev state=latest
+    become: true
+
+  - name: install make
+    package: name=make state=latest
+    become: true

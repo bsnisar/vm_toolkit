@@ -27,7 +27,7 @@ Vagrant.configure(2) do |config|
         # config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
         config.vm.synced_folder ".", "/vagrant", disabled: true
 
-		config.vm.provision "ansible" do |ansible|
+		config.vm.provision "run_playbook", type: "ansible", run: "never" do |ansible|
             ansible.verbose = "v"
      		ansible.playbook = "provisioning/playbook.yml"
   		end

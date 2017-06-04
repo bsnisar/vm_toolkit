@@ -1,14 +1,4 @@
 ---
 - hosts: all
-  tasks:
-    - name: install git
-      package: name=git state=latest
-      become: true
-
-    - name: install curl
-      package: name=curl state=latest
-      become: true
-
   roles:
-    - lua
     - nginx1.9

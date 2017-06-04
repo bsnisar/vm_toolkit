@@ -1,65 +1,45 @@
 ---
-  - name: download ngx_devel_kit
-    get_url: 
-      url: https://github.com/simpl/ngx_devel_kit/archive/v0.3.0.tar.gz 
-      dest: /tmp/ngx_devel_kit_v0.3.0.tar.gz
+  - name: modules src dir
+    file: path=/tmp/ngx_modules state=directory
 
-  - name: extract ngx_devel_kit
+  - name: download modules
+    get_url: 
+      url: "{{ item.value.url }}"
+      dest: "/tmp/ngx_modules/{{ item.value.name }}"
+    with_dict: "{{ nginx_modules }}"
+
+
+  - name: extract modules
     unarchive: 
-       src: /tmp/ngx_devel_kit_v0.3.0.tar.gz 
-       dest: /tmp
-       remote_src: True
+      src: "/tmp/{{ item.value.name }}"
+      dest: /tmp/ngx_modules
+      remote_src: yes
+    with_dict: "{{ nginx_modules }}"
 
-  - name: get ngx_lua_module
-    get_url: 
-       url: https://github.com/openresty/lua-nginx-module/archive/v0.10.9rc5.tar.gz
-       dest: /tmp/lua_nginx_module_v0.10.9rc5.tar.gz
-
-  - name: extract ngx_lua_module
+  - name: get nginx binary
     unarchive: 
-       src: /tmp/lua_nginx_module_v0.10.9rc5.tar.gz
-       dest: /tmp
-       remote_src: True
+      src: "/tmp/{{ item.value.name }}"
+      dest: /tmp
+      remote_src: yes
+    with_dict: "{{ nginx_modules }}"
 
-  - name: get nginx sources
-    get_url: 
-       url: http://nginx.org/download/nginx-1.12.0.tar.gz
-       dest: /tmp/nginx-1.12.0.tar.gz
+  - name: get nginx source
+    get_url: url=http://nginx.org/download/nginx-1.12.0.tar.gz dest=/tmp/nginx-1.12.0.tar.gz
 
   - name: extract nginx
-    unarchive: 
-       src: /tmp/nginx-1.12.0.tar.gz
-       dest: /tmp
-       remote_src: True
-  
-  - name: add zlib for compiling
-    package: name=zlib1g-dev state=latest   
-    become: True
+    unarchive: src=/tmp/nginx-1.12.0.tar.gz dest=/tmp remote_src=yes
+    vars:
+      nginx_binary: /tmp/nginx-1.12.0
 
-    # TODO wrong generated name for lua_nginx_module_v0 -> lua-nginx-module
-  - name: configure nginx modules
-    shell: |
-        ./configure --with-compat \
-             --add-dynamic-module=/tmp/lua_nginx_module_v0.10.9rc5 \
-             --add-dynamic-module=/tmp/ngx_devel_kit-0.3.0
-    args:
-       chdir: /tmp/nginx-1.12.0
-    become: True
+  - name: gether modules pathes
+    find: paths=/tmp/ngx_modules file_type=directory
+    register: sources
 
-  - name: make nginx modules
-    shell: make modules
-    args:
-       chdir: /tmp/nginx-1.12.0
-    become: True	
-
-  - name: copy modules to nginx
-    copy: 
-      src: "/tmp/nginx-1.12.0/objs/{{item}}"
-      dest: "{{nginx_modules_dir}}"
-    become: True
-    with_items:
-      - ndk_http_module.so
-      - ngx_http_lua_module.so
-
-
-
+  - name: compile modules
+    debug:
+      var: sources
+      msg:  |
+       ./configure --with-compat \
+            {% for item in nginx_modules %}
+               --add-dynamic-module="{{ item.value.dir }}" \
+            {% endfor %}      
