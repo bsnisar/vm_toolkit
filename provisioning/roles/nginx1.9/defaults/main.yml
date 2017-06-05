@@ -5,13 +5,11 @@ nginx_version: 1.2.0
 
 nginx_modules:
   ngx_devel_kit:
-    name: ngx-devel-kit-v0.3.0.tar.gz
-    dir: ngx-devel-kit-v0.3.0
+    name: ngx-devel-kit-v0.3.0_version.tar.gz
     url: https://github.com/simpl/ngx_devel_kit/archive/v0.3.0.tar.gz
-    obj: ndk_http_module.so
+    obj_name: ndk_http_module.so
   ngx_lua_module:
-    name: lua-nginx-module-v0.10.9rc5.tar.gz
-    dir: lua-nginx-module-v0.10.9rc5
+    name: lua-nginx-module-v0.10.9rc5_version.tar.gz
     url: https://github.com/openresty/lua-nginx-module/archive/v0.10.9rc5.tar.gz
-    orj: ngx_http_lua_module.so
+    obj_name: ngx_http_lua_module.so
 

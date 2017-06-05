@@ -1,0 +1,56 @@
+---
+  - name: modules src dir
+    file: path=/tmp/ngx_modules state=directory
+
+  - name: download modules
+    get_url: 
+      url: "{{ item.value.url }}"
+      dest: "/tmp/ngx_modules/{{ item.value.name }}"
+    with_dict: "{{ nginx_modules }}"
+
+
+  - name: extract modules
+    unarchive: 
+      src: "/tmp/ngx_modules/{{ item.value.name }}"
+      dest: /tmp/ngx_modules
+      remote_src: yes
+    with_dict: "{{ nginx_modules }}"
+
+  - name: get nginx source
+    get_url: url=http://nginx.org/download/nginx-1.12.0.tar.gz dest=/tmp/nginx-1.12.0.tar.gz
+
+  - name: extract nginx
+    unarchive: src=/tmp/nginx-1.12.0.tar.gz dest=/tmp remote_src=yes
+
+  - name: get dirs
+    find: paths=/tmp/ngx_modules
+    register: src    
+
+  # - name: compile modules
+  #  debug:
+  #    # var: src
+  #    msg:  ./configure --with-compat {% for item in src %} --add-dynamic-module="{{ k }}" {% endfor %}
+           
+
+  - name: compile ngx modules
+    shell: |
+          ./configure --with-compat \
+               --add-dynamic-module=/tmp/ngx_modules/lua-nginx-module-0.10.9rc5 \
+               --add-dynamic-module=/tmp/ngx_modules/ngx_devel_kit-0.3.0
+    args:
+       chdir: /tmp/nginx-1.12.0
+    become: yes
+
+  - name: make ngx modules
+    command: make modules
+    args:
+        chdir: /tmp/nginx-1.12.0
+    become: yes
+
+  - name: copy compiled modules
+    copy:
+      src: "/tmp/nginx-1.12.0/objs/{{ item.value.obj_name }}"
+      dest: /etc/nginx/modules
+      remote_src: yes
+    become: yes
+    with_dict: "{{ nginx_modules }}"

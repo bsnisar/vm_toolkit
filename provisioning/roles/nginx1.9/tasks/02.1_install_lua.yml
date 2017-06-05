@@ -1,9 +1,9 @@
 ---
   - name: check luajit
     command: luajit -v
-    register: luajit_exists
     ignore_errors: True
+    register: luajit_exists
 
   - name: install LuaJit
-    include: 03.1_compile_luajit.yml
-    when: result|failed
+    include: compile_luajit.yml
+    when: luajit_exists|failed

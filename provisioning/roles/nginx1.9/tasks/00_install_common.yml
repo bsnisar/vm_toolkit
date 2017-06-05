@@ -14,3 +14,7 @@
   - name: install make
     apt: name=make state=latest
     become: true
+
+  - name: install zlib-devel
+    apt: name=zlib1g-dev state=latest
+    become: true
