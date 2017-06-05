@@ -15,6 +15,8 @@ Setup Debian VM and use ansible for provisioning. Ansible playbock include sever
 - nginx 1.9 with additional modules
 - java 8
 
+### KVM provider
+vagrant plugin can be found here: https://github.com/vagrant-libvirt/vagrant-libvirt
 
 ### vim instalation
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
