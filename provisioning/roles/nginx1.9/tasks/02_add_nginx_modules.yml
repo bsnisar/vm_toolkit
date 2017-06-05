@@ -11,15 +11,8 @@
 
   - name: extract modules
     unarchive: 
-      src: "/tmp/{{ item.value.name }}"
+      src: "/tmp/ngx_modules/{{ item.value.name }}"
       dest: /tmp/ngx_modules
-      remote_src: yes
-    with_dict: "{{ nginx_modules }}"
-
-  - name: get nginx binary
-    unarchive: 
-      src: "/tmp/{{ item.value.name }}"
-      dest: /tmp
       remote_src: yes
     with_dict: "{{ nginx_modules }}"
 
@@ -28,18 +21,12 @@
 
   - name: extract nginx
     unarchive: src=/tmp/nginx-1.12.0.tar.gz dest=/tmp remote_src=yes
-    vars:
-      nginx_binary: /tmp/nginx-1.12.0
-
-  - name: gether modules pathes
-    find: paths=/tmp/ngx_modules file_type=directory
-    register: sources
 
   - name: compile modules
     debug:
-      var: sources
+      # var: sources
       msg:  |
-       ./configure --with-compat \
+       ./configure --with-compat \	
             {% for item in nginx_modules %}
-               --add-dynamic-module="{{ item.value.dir }}" \
+               --add-dynamic-module="{{ item }}" \
             {% endfor %}      
