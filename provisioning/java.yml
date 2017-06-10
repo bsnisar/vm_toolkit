@@ -1,0 +1,21 @@
+---
+  - hosts: all
+    tasks:
+      - name: add java 8 repo
+        apt_repository:
+          repo: deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main
+          state: present
+          update_cache: yes
+        become: true
+
+      - name: accept installer
+        shell: "echo oracle-java8-installer shared/accepted-oracle-licence-v1-1 boolean true | sudo /usr/bin/debconf-set-selections"
+        become: true
+
+      - name: add jdk 8
+        apt:
+          name: oracle-java8-installer
+          state: latest
+          update_cache: yes
+        become: true
+

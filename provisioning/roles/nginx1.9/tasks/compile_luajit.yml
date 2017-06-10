@@ -4,7 +4,6 @@
   get_url:
     url: http://luajit.org/download/LuaJIT-2.0.5.tar.gz
     dest: /tmp/LuaJIT-2.0.5.tar.gz
-  when: 
 
 - name: extract LuaJit
   unarchive: 

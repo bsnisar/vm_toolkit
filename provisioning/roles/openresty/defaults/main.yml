@@ -1,0 +1,3 @@
+---
+openresty_home: "/usr/local/openresty"
+luarocks_bin: "{{ openresty_home }}/luajit/bin/luarocks"

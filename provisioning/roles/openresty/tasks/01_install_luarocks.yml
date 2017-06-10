@@ -1,0 +1,44 @@
+---
+  - name: get luarock dist
+    get_url:
+      url: http://luarocks.org/releases/luarocks-2.0.13.tar.gz
+      dest: /tmp/luarocks-2.0.13.tar.gz
+
+  - name: extract luarocks
+    unarchive:
+      src: /tmp/luarocks-2.0.13.tar.gz
+      dest: /tmp
+      remote_src: yes
+
+  - name: configure luarocks
+    shell: |
+       ./configure --prefix={{ openresty_home }}/luajit \
+           --with-lua={{ openresty_home }}/luajit/ \
+           --lua-suffix=jit \
+           --with-lua-include={{ openresty_home }}/luajit/include/luajit-2.1
+    args:
+      chdir: /tmp/luarocks-2.0.13
+    become: yes
+
+  - name: get make
+    package: name=make state=latest
+    become: yes
+
+  - name: get unzip
+    package: name=unzip state=latest
+    become: yes
+
+  - name: get gcc
+    package: name=gcc state=latest
+    become: yes
+
+  - name: make luarocks
+    shell: make && make install
+    args:
+      chdir: /tmp/luarocks-2.0.13
+    become: yes
+
+  - name: install md5 lua lib
+    shell: "{{ luarocks_bin }} install md5"
+    become: yes
+
