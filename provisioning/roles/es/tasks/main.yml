@@ -1,0 +1,11 @@
+---
+  - name: Add package key
+    apt_key:
+      url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+      state: present
+    become: yes
+
+  - name: Install elasticsearch .deb distribution
+    apt:
+      deb: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.4.2.deb
+    become: yes
