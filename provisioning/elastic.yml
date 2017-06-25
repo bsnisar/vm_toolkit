@@ -1,6 +1,0 @@
----
-- hosts: all
-  roles:
-    # - nginx1.9
-    # - es
-    - logstash
