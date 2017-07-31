@@ -7,7 +7,7 @@ Vagrant.configure(2) do |config|
         #config.vm.box = "debian/jessie64"
 		#config.vm.box = "centos/7"
         #config.vm.box = "kozo/centos-7"
-        
+
 		  config.vm.box = "centos/7"
 
 	    # Disable the new default behavior introduced in Vagrant 1.7, to
@@ -15,10 +15,13 @@ Vagrant.configure(2) do |config|
 	    # See https://github.com/mitchellh/vagrant/issues/5005
 	    config.ssh.insert_key = false
 
-
-      config.vm.network :private_network, ip: '192.168.9.90'
+      # For internt acces please create  virtual network switch
+      #  Hyper-V Manager / Virtual Switch Manager / New virtual network switch
       config.vm.provider "hyperv"
+
       config.vm.provider "virtualbox"
+      config.vm.network "public_network"
+      config.vm.network :private_network, ip: '192.168.9.90'
 
       config.vm.provider :virtualbox do |vb|
         vb.gui = false
