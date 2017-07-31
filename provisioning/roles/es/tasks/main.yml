@@ -1,0 +1,23 @@
+---
+  - name: Add package key
+    rpm_key:
+      state: present
+      key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    become: yes
+
+  - name: Add Elasticsearch repo
+    yum_repository:
+      name: elasticsearch-5.x
+      description: elasticsearch repo, version 5.x
+      baseurl: https://artifacts.elastic.co/packages/5.x/yum
+      gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+      gpgcheck: yes
+      state: present
+    become: yes
+
+  - name: Install Elasticsearch
+    yum:
+      name: elasticsearch
+      state: latest
+      update_cache: yes
+    become: yes

@@ -1,0 +1,10 @@
+---
+  - include: 00_install_openresty.yml
+
+  - name: luarocks manager
+    stat: path="{{ luarocks_bin }}"
+    register: p
+
+  - name: luarocks install
+    include: 01_install_luarocks.yml
+    when: p.stat.exists == False

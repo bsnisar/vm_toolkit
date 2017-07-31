@@ -1,4 +1,6 @@
 ---
 - hosts: all
   roles:
-    - nginx1.9
+#    - java
+    - es
+#    - openresty
