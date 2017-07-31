@@ -16,16 +16,16 @@ Vagrant.configure(2) do |config|
 	    config.ssh.insert_key = false
 
 
-        config.vm.network :private_network, ip: '192.168.9.90'
-        config.vm.provider "hyperv"
-        config.vm.provider "virtualbox"
+      config.vm.network :private_network, ip: '192.168.9.90'
+      config.vm.provider "hyperv"
+      config.vm.provider "virtualbox"
 
-        config.vm.provider :virtualbox do |vb|
-            vb.gui = false
-            vb.customize ["modifyvm", :id, "--cpus", 2]
-            vb.customize ["modifyvm", :id, "--memory", 3072]
-            vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-        end
+      config.vm.provider :virtualbox do |vb|
+        vb.gui = false
+        vb.customize ["modifyvm", :id, "--cpus", 2]
+        vb.customize ["modifyvm", :id, "--memory", 3072]
+        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      end
 
 	    config.vm.network "forwarded_port", guest: 80, host: 8085
 	    config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 80, host: 8091
@@ -33,10 +33,10 @@ Vagrant.configure(2) do |config|
         # need plugin!
         # vagrant plugin install vagrant-vbguest
         # config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
-        config.vm.synced_folder ".", "/vagrant", disabled: true
+      config.vm.synced_folder ".", "/vagrant", disabled: true
 
-        config.vm.provision "run_playbook", type: "ansible", run: "never" do |ansible|
+      config.vm.provision "run_playbook", type: "ansible", run: "never" do |ansible|
         ansible.verbose = "v"
-     		ansible.playbook = "provisioning/playbook.yml"
-  	end
+     	  ansible.playbook = "provisioning/playbook.yml"
+  	  end
 end
