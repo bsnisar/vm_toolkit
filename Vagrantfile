@@ -30,8 +30,8 @@ Vagrant.configure(2) do |config|
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       end
 
-	    config.vm.network "forwarded_port", guest: 80, host: 8085
-	    config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 80, host: 8091
+      config.vm.network "forwarded_port", guest: 80, host: 8085
+      config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 80, host: 8091
 
         # need plugin!
         # vagrant plugin install vagrant-vbguest
@@ -40,6 +40,17 @@ Vagrant.configure(2) do |config|
 
       config.vm.provision "run_playbook", type: "ansible", run: "never" do |ansible|
         ansible.verbose = "v"
-     	  ansible.playbook = "provisioning/playbook.yml"
-  	  end
+        ansible.playbook = "provisioning/playbook.yml"
+      end
+
+      config.vm.provision "compile_ffmpeg", type: "shell", run: "never" do |p|
+         p.path = "compile_ffmpeg.sh"
+	       p.privileged = true
+      end
+
+			config.vm.provision "install_ffmpeg", type: "shell", run: "never" do |p|
+         p.path = "install_ffmpeg.sh"
+	       p.privileged = true
+      end
+
 end
