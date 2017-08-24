@@ -1,0 +1,15 @@
+---
+  - name: Add utils for docker repo
+    shell: yum install -y yum-utils device-mapper-persistent-data lvm2
+    become: yes
+
+  - name: Add docker repo
+    shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    become: yes
+
+  - name: install docker.d
+    yum:
+      name: docker-ce
+      state: latest
+      update_cache: yes
+    become: yes

@@ -38,7 +38,7 @@ Vagrant.configure(2) do |config|
       # config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
       config.vm.synced_folder ".", "/vagrant", disabled: true
 
-			config.vm.provision "get-ansible",
+			config.vm.provision "get-ansible-local",
 			  type: "shell",
 				privileged: true,
 				inline: "yum install epel-release -y && yum install ansible -y"
@@ -49,16 +49,20 @@ Vagrant.configure(2) do |config|
 			 destination: "provisioning"
 
 
-      config.vm.provision "dev", type: "ansible_local", run: "never" do |ansible|
+      config.vm.provision "dev", type: "ansible", run: "never" do |ansible|
         ansible.verbose = "v"
-        ansible.playbook = "~/provisioning/dev-stack.yml"
+        ansible.playbook = "provisioning/dev-stack.yml"
       end
 
-			config.vm.provision "web", type: "ansible_local", run: "never" do |ansible|
+			config.vm.provision "web", type: "ansible", run: "never" do |ansible|
         ansible.verbose = "v"
-        ansible.playbook = "~/provisioning/web-stack.yml"
+        ansible.playbook = "provisioning/web-stack.yml"
       end
 
+			config.vm.provision "ops", type: "ansible" do |ansible|
+        ansible.verbose = "v"
+        ansible.playbook = "provisioning/ops-stack.yml"
+      end
 
      # config.vm.provision "compile_ffmpeg", type: "shell", run: "never" do |p|
      #    p.path = "compile_ffmpeg.sh"
