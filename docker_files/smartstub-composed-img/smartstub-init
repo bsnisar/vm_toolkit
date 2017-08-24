@@ -1,4 +1,0 @@
-#!/bin/bash
-
-echo "Starting smart-stab...."
-java -jar smart-stub.jar > /dev/null

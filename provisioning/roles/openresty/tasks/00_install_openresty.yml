@@ -1,20 +1,15 @@
 ---
-  - name: add key for openresty repository
-    apt_key:
-      url: https://openresty.org/package/pubkey.gpg
+  - name: Add openresty repository
+    yum_repository:
+      name: openresty repo
+      baseurl: https://openresty.org/package/centos/openresty.repo
+      gpgkey: https://openresty.org/package/pubkey.gpg
       state: present
     become: true
 
-  - name: add openresty repository
-    apt_repository:
-      repo: deb http://openresty.org/package/debian jessie openresty
-      state: present
-      update_cache: yes
-    become: true
-
-  - name: install openresty
-    apt:
+  - name: Install openresty
+    yum:
       name: openresty
       state: latest
+      update_cache: yes
     become: yes
-

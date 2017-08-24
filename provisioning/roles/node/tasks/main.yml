@@ -1,0 +1,10 @@
+---
+  - name: install nodejs repo
+    shell: curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
+    become: yes
+
+  - name: install nodejs
+    yum:
+      name: nodejs
+      state: latest
+    become: yes

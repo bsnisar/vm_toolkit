@@ -1,5 +1,0 @@
----
-  - name: Install logstash .deb distribution
-    apt:
-      deb: https://artifacts.elastic.co/downloads/logstash/logstash-5.4.2.deb
-    become: yes

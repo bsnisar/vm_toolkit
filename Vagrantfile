@@ -20,7 +20,7 @@ Vagrant.configure(2) do |config|
       config.vm.provider "hyperv"
 
       config.vm.provider "virtualbox"
-      config.vm.network "public_network"
+      #config.vm.network "public_network"
       config.vm.network :private_network, ip: '192.168.9.90'
 
       config.vm.provider :virtualbox do |vb|
@@ -33,20 +33,37 @@ Vagrant.configure(2) do |config|
       config.vm.network "forwarded_port", guest: 80, host: 8085
       config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 80, host: 8091
 
-        # need plugin!
-        # vagrant plugin install vagrant-vbguest
-        # config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+      # We need plugin to get sync folder on virtualbox
+      # >> vagrant plugin install vagrant-vbguest
+      # config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
       config.vm.synced_folder ".", "/vagrant", disabled: true
 
-      config.vm.provision "run_playbook", type: "ansible", run: "never" do |ansible|
+			config.vm.provision "get-ansible",
+			  type: "shell",
+				privileged: true,
+				inline: "yum install epel-release -y && yum install ansible -y"
+
+		  config.vm.provision "copy-playbooks",
+		   type: "file",
+		   source: "provisioning",
+			 destination: "provisioning"
+
+
+      config.vm.provision "dev", type: "ansible_local", run: "never" do |ansible|
         ansible.verbose = "v"
-        ansible.playbook = "provisioning/playbook.yml"
+        ansible.playbook = "~/provisioning/dev-stack.yml"
       end
 
-      config.vm.provision "compile_ffmpeg", type: "shell", run: "never" do |p|
-         p.path = "compile_ffmpeg.sh"
-	       p.privileged = true
+			config.vm.provision "web", type: "ansible_local", run: "never" do |ansible|
+        ansible.verbose = "v"
+        ansible.playbook = "~/provisioning/web-stack.yml"
       end
+
+
+     # config.vm.provision "compile_ffmpeg", type: "shell", run: "never" do |p|
+     #    p.path = "compile_ffmpeg.sh"
+     #	       p.privileged = true
+     # end
 
 			config.vm.provision "install_ffmpeg", type: "shell", run: "never" do |p|
          p.path = "install_ffmpeg.sh"
