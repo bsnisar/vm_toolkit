@@ -30,7 +30,7 @@ Vagrant.configure(2) do |config|
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       end
 
-      config.vm.network "forwarded_port", guest: 80, host: 8085
+      config.vm.network "forwarded_port", guest: 8080, host: 9105
       config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 80, host: 8091
 
       # We need plugin to get sync folder on virtualbox
@@ -38,28 +38,31 @@ Vagrant.configure(2) do |config|
       # config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
       config.vm.synced_folder ".", "/vagrant", disabled: true
 
-			config.vm.provision "get-ansible-local",
-			  type: "shell",
-				privileged: true,
-				inline: "yum install epel-release -y && yum install ansible -y"
+			# config.vm.provision "get-ansible-local",
+			#   type: "shell",
+			# 	privileged: true,
+			# 	inline: "yum install epel-release -y && yum install ansible -y"
+			#
+		  # config.vm.provision "copy-playbooks",
+		  #  type: "file",
+		  #  source: "provisioning",
+			#  destination: "provisioning"
 
-		  config.vm.provision "copy-playbooks",
-		   type: "file",
-		   source: "provisioning",
-			 destination: "provisioning"
 
-
+			# Install java and nodejs
       config.vm.provision "dev", type: "ansible", run: "never" do |ansible|
         ansible.verbose = "v"
         ansible.playbook = "provisioning/dev-stack.yml"
       end
 
-			config.vm.provision "web", type: "ansible", run: "never" do |ansible|
-        ansible.verbose = "v"
-        ansible.playbook = "provisioning/web-stack.yml"
-      end
+			## Install NGINX on VM
+			# config.vm.provision "web", type: "ansible", run: "never" do |ansible|
+      #   ansible.verbose = "v"
+      #   ansible.playbook = "provisioning/web-stack.yml"
+      # end
 
-			config.vm.provision "ops", type: "ansible" do |ansible|
+			# Install gerrit and docker on VM
+			config.vm.provision "ops", type: "ansible", run: "never" do |ansible|
         ansible.verbose = "v"
         ansible.playbook = "provisioning/ops-stack.yml"
       end

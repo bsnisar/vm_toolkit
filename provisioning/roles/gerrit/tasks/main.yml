@@ -1,0 +1,33 @@
+---
+  - name: add gerrit user
+    user:
+      name: gerrit
+      comment: "Mr. Gerrit"
+      state: present
+    become: yes
+
+  - name: get gerrit war
+    get_url:
+       url: https://www.gerritcodereview.com/download/{{ gerrit }}
+       dest: ~/gerrit.war
+    become: yes
+    become_user: gerrit
+
+  - name: get git
+    package: name=git state=latest
+    become: yes
+
+  - name: init gerrit
+    shell: java -jar ~/gerrit.war init --batch -d ~/gerrit_home
+    become: yes
+    become_user: gerrit
+
+  - name: copy service info
+    copy:
+      src: gerrit.service
+      dest: /etc/systemd/system/
+      mode: 664
+    become: yes
+
+  - name: init service
+    systemd: name=gerrit state=restarted daemon_reload=yes
