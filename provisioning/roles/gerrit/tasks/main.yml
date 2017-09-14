@@ -18,7 +18,7 @@
     become: yes
 
   - name: init gerrit
-    shell: java -jar ~/gerrit.war init --batch -d ~/gerrit_home
+    shell: java -jar ~/gerrit.war init --batch -d ~/gerrit_site
     become: yes
     become_user: gerrit
 
@@ -30,4 +30,8 @@
     become: yes
 
   - name: init service
-    systemd: name=gerrit state=restarted daemon_reload=yes
+    systemd:
+      name: gerrit
+      state: restarted
+      daemon_reload: yes
+    become: yes

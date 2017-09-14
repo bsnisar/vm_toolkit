@@ -1,0 +1,31 @@
+---
+  - name: create ssh keys folder
+    file:
+      dest: "/concource/.keys/"
+      state: directory
+    become: yes
+
+  - name: create ssh folders for services
+    file:
+      dest: "/concource/{{ item }}"
+      state: directory
+    become: yes
+    with_items:
+      - web
+      - worker
+
+  - name: create ssh keys
+    shell: <
+      ssh-keygen -t rsa -f /concource/.keys/tsa_host_key -N ''
+      ssh-keygen -t rsa -f /concource/.keys/session_signing_key -N ''
+      ssh-keygen -t rsa -f /concource/.keys/worker_key -N ''
+      cp /concource/.keys/worker_key.pub /concource/web/authorized_worker_keys
+      cp /concource/.keys/tsa_host_key.pub /concource/worker
+
+
+  - name: copy service info
+    copy:
+      src: compose.yml
+      dest: /concource/
+      state: directory
+    become: yes

@@ -3,10 +3,10 @@ Description=Gerrit Server
 After=network.target
 
 [Service]
-ExecStart=/home/gerrit/gerrit_home/bin/gerrit.sh start
-ExecReload=/home/gerrit/gerrit_home/bin/gerrit.sh restart
-ExecStop=/home/gerrit/gerrit_home/bin/gerrit.sh stop
-Environment=GERRIT_SITE=/home/gerrit/gerrit_home
+ExecStart=/home/gerrit/gerrit_site/bin/gerrit.sh start
+ExecReload=/home/gerrit/gerrit_site/bin/gerrit.sh restart
+ExecStop=/home/gerrit/gerrit_site/bin/gerrit.sh stop
+Environment=GERRIT_SITE=/home/gerrit/gerrit_site
 Restart=always
 User=gerrit
 
